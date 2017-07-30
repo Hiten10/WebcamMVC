@@ -26,7 +26,8 @@
                data: { Imagename: src },
                success: function () { }
            });
-            window.opener.location.href = "http://localhost:55694/Photo/Changephoto";
+            //window.opener.location.href = "http://localhost:55694/Photo/Changephoto";
+            window.opener.location.href = "http://"+window.location.host+"/Photo/Changephoto";
             self.close();}}
 </script>
 @using (Html.BeginForm())

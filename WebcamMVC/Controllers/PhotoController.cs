@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.IO;
+using System.Web.Mvc;
 
 namespace WebcamMVC.Controllers
 {
     public class PhotoController : Controller
     {
+        private readonly string hostName = string.Empty;
+
+        public PhotoController()
+        {
+            Uri myuri = new Uri(System.Web.HttpContext.Current.Request.Url.AbsoluteUri);
+            string pathQuery = myuri.PathAndQuery;
+            hostName = myuri.ToString().Replace(pathQuery, "");
+        }
 
         [HttpGet]
         public ActionResult Index()
@@ -22,7 +27,8 @@ namespace WebcamMVC.Controllers
         {
             string sss = Session["val"].ToString();
 
-            ViewBag.pic = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+            //ViewBag.pic = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+            ViewBag.pic = string.Concat(hostName, "/WebImages/", Session["val"].ToString());
 
             return View();
         }
@@ -30,9 +36,11 @@ namespace WebcamMVC.Controllers
         [HttpGet]
         public ActionResult Changephoto()
         {
+
             if (Convert.ToString(Session["val"]) != string.Empty)
             {
-                ViewBag.pic = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+                //ViewBag.pic = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+                ViewBag.pic = string.Concat(hostName, "/WebImages/", Session["val"].ToString());
             }
             else
             {
@@ -41,11 +49,12 @@ namespace WebcamMVC.Controllers
             return View();
         }
 
-        
+
 
         public JsonResult Rebind()
         {
-            string path = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+            //string path = "http://localhost:55694/WebImages/" + Session["val"].ToString();
+            string path = string.Concat(hostName, "/WebImages/", Session["val"].ToString());
 
             return Json(path, JsonRequestBehavior.AllowGet);
         }
